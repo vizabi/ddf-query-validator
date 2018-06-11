@@ -1,0 +1,18 @@
+# Webstorm
+.idea
+
+# Logs
+*.log*
+
+# Coverage directory used by tools like istanbul
+coverage
+coverage.lcov
+
+# nyc test coverage
+.nyc_output
+
+# Dependency directories
+node_modules
+
+# Optional npm cache directory
+.npm

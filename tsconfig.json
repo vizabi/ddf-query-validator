@@ -23,12 +23,12 @@
     ]
   },
   "include": [
-    "src/index.ts",
-    "src/index-web.ts"
+    "src/index.ts"
   ],
   "exclude": [
-    "dist",
+    "lib",
     "node_modules",
-    "**/*.spec.ts"
+    "**/*.spec.ts",
+    "**/*.e2e.ts"
   ]
 }

@@ -4,7 +4,6 @@
   "description": "DDF query validator",
   "main": "lib/index.js",
   "scripts": {
-    "postinstall": "npm run tsc",
     "test": "npm run e2e",
     "test-travis": "npm run e2e && nyc report --reporter=text-lcov > coverage.lcov && codecov",
     "pree2e": "npm i",

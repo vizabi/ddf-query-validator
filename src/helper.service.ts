@@ -1,5 +1,5 @@
-import get from 'lodash-es/get';
-import includes from 'lodash-es/includes';
+import * as get from 'lodash.get';
+import * as includes from 'lodash.includes';
 
 export const SCHEMAS = new Set(['concepts.schema', 'entities.schema', 'datapoints.schema', '*.schema']);
 export const DATAPOINTS = 'datapoints';

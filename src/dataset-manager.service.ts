@@ -1,6 +1,6 @@
-import isNil from 'lodash-es/isNil';
-import includes from 'lodash-es/includes';
-import get from 'lodash-es/get';
+import * as isNil from 'lodash.isnil';
+import * as includes from 'lodash.includes';
+import * as get from 'lodash.get';
 import {
   DEFAULT_DATASET_BRANCH,
   DEFAULT_DATASET_COMMIT,

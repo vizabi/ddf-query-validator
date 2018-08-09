@@ -8,9 +8,6 @@
     "preserveConstEnums": true,
     "removeComments": true,
     "typeRoots": ["node_modules/@types"],
-    "types": [
-      "node"
-    ],
     "moduleResolution": "node",
     "emitDecoratorMetadata": true,
     "experimentalDecorators": true,

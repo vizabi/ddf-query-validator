@@ -1,13 +1,13 @@
-import isEmpty from 'lodash-es/isEmpty';
-import filter from 'lodash-es/filter';
-import map from 'lodash-es/map';
-import get from 'lodash-es/get';
-import compact from 'lodash-es/compact';
-import includes from 'lodash-es/includes';
-import startsWith from 'lodash-es/startsWith';
-import isNil from 'lodash-es/isNil';
-import trimStart from 'lodash-es/trimStart';
-import flatMap from 'lodash-es/flatMap';
+import * as isEmpty from 'lodash.isempty';
+import * as filter from 'lodash.filter';
+import * as map from 'lodash.map';
+import * as get from 'lodash.get';
+import * as compact from 'lodash.compact';
+import * as includes from 'lodash.includes';
+import * as startsWith from 'lodash.startswith';
+import * as isNil from 'lodash.isnil';
+import * as trimStart from 'lodash.trimstart';
+import * as flatMap from 'lodash.flatmap';
 import {
   CONCEPT_TYPE_ENTITY_DOMAIN,
   CONCEPT_TYPE_ENTITY_SET,

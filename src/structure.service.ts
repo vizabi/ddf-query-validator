@@ -1,21 +1,21 @@
-import isEmpty from 'lodash-es/isEmpty';
-import isNil from 'lodash-es/isNil';
-import isObject from 'lodash-es/isObject';
-import isArray from 'lodash-es/isArray';
-import size from 'lodash-es/size';
-import values from 'lodash-es/values';
-import keys from 'lodash-es/keys';
-import map from 'lodash-es/map';
-import first from 'lodash-es/first';
-import filter from 'lodash-es/filter';
-import startsWith from 'lodash-es/startsWith';
-import get from 'lodash-es/get';
-import has from 'lodash-es/has';
-import every from 'lodash-es/every';
-import compact from 'lodash-es/compact';
-import isString from 'lodash-es/isString';
-import includes from 'lodash-es/includes';
-import uniq from 'lodash-es/uniq';
+import * as isEmpty from 'lodash.isempty';
+import * as isNil from 'lodash.isnil';
+import * as isObject from 'lodash.isobject';
+import * as isArray from 'lodash.isarray';
+import * as size from 'lodash.size';
+import * as values from 'lodash.values';
+import * as keys from 'lodash.keys';
+import * as map from 'lodash.map';
+import * as first from 'lodash.first';
+import * as filter from 'lodash.filter';
+import * as startsWith from 'lodash.startswith';
+import * as get from 'lodash.get';
+import * as has from 'lodash.has';
+import * as every from 'lodash.every';
+import * as compact from 'lodash.compact';
+import * as isString from 'lodash.isstring';
+import * as includes from 'lodash.includes';
+import * as uniq from 'lodash.uniq';
 import {
   AVAILABLE_FROM_CLAUSE_VALUES,
   AVAILABLE_ORDER_BY_CLAUSE_VALUES,

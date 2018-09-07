@@ -1,6 +1,6 @@
 {
   "name": "ddf-query-validator",
-  "version": "1.0.2",
+  "version": "1.0.3",
   "description": "DDF query validator",
   "main": "lib/index.js",
   "scripts": {

@@ -1,6 +1,7 @@
 import * as isNil from 'lodash.isnil';
 import * as includes from 'lodash.includes';
 import * as get from 'lodash.get';
+import * as path from 'path';
 import {
   DEFAULT_DATASET_BRANCH,
   DEFAULT_DATASET_COMMIT,
@@ -19,12 +20,14 @@ export function getDatasetPath(basePath, queryParam) {
 }
 
 function getDatapackagePath(datasetPath): string {
-  return datasetPath + '/datapackage.json';
+  return path.resolve(datasetPath, 'datapackage.json');
 }
 
 function isDatasetPathAlreadyInBasePath(fileReader: IReader, basePath: string): Promise<boolean> {
   return new Promise((resolve) => {
-    fileReader.readText(getDatapackagePath(basePath), (error) => resolve(!error));
+    fileReader.readText(getDatapackagePath(basePath), (error) => {
+      return resolve(!error);
+    });
   });
 }
 
@@ -50,7 +53,7 @@ export async function extendQueryParamWithDatasetProps(queryParam, options = {})
     branch: originBranch,
     commit: originCommit
   } = queryParam;
-  const {
+  let {
     dataset = DEFAULT_DATASET,
     branch = DEFAULT_BRANCH,
     commit = DEFAULT_COMMIT
@@ -76,7 +79,11 @@ export async function extendQueryParamWithDatasetProps(queryParam, options = {})
   let datapackagePath;
 
   try {
-    if (await isDatasetPathAlreadyInBasePath(fileReader, basePath)) {
+    const isAlreadyDataset = await isDatasetPathAlreadyInBasePath(fileReader, basePath);
+    if (isAlreadyDataset) {
+      dataset = basePath;
+      branch = null;
+      commit = null;
       datasetPath = basePath;
       datapackagePath = getDatapackagePath(basePath);
     } else {

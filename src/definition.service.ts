@@ -38,7 +38,7 @@ export function validateQueryDefinitions (query, options = {}): Promise<string |
     const isQueryValid = isEmpty(validationResult);
 
     if (!isQueryValid) {
-      return reject(`Too many query definition errors [repo: ${query.dataset}]: \n* ${validationResult.join('\n* ')}`);
+      return reject(`Too many query definition errors [repo: ${(options as any).basePath}]: \n* ${validationResult.join('\n* ')}`);
     }
 
     return resolve();

@@ -1,16 +1,9 @@
 import * as isNil from 'lodash.isnil';
 import * as includes from 'lodash.includes';
 import * as get from 'lodash.get';
-import * as path from 'path';
-import {
-  DEFAULT_DATASET_BRANCH,
-  DEFAULT_DATASET_COMMIT,
-  DEFAULT_DATASET_DIR,
-  DEFAULT_DATASET_NAME
-} from './helper.service';
-import { IReader } from './interfaces';
+import { DEFAULT_REPOSITORY_BRANCH, DEFAULT_REPOSITORY_HASH, DEFAULT_REPOSITORY_NAME } from './helper.service';
 
-export function getDatasetPath(basePath, queryParam) {
+export function getRepositoryPath (basePath, queryParam) {
   const {
     dataset,
     branch,
@@ -19,83 +12,46 @@ export function getDatasetPath(basePath, queryParam) {
   return `${basePath}${dataset}/${branch}-${commit}`;
 }
 
-function getDatapackagePath(datasetPath): string {
-  return path.resolve(datasetPath, 'datapackage.json');
+export function getFilePath (repositoryPath, filePath = 'datapackage.json'): string {
+  return `${repositoryPath}/${filePath}`;
 }
 
-function isDatasetPathAlreadyInBasePath(fileReader: IReader, basePath: string): Promise<boolean> {
-  return new Promise((resolve) => {
-    fileReader.readText(getDatapackagePath(basePath), (error) => {
-      return resolve(!error);
-    });
-  });
-}
+export function extendQueryWithRepository (queryParam, config = {}): Error | void {
+  // TODO: refactor unit tests
+  // const REPOSITORY_DESCRIPTORS = get(config, 'repositoryDescriptors', {[DEFAULT_REPOSITORY]: {[DEFAULT_BRANCH]: [DEFAULT_HASH]}});
+  const REPOSITORY_DESCRIPTORS = get(config, 'repositoryDescriptors', {});
+  const IS_DEFAULT_DATASET = isNil(queryParam.dataset) ? 'default ' : '';
 
-export async function extendQueryParamWithDatasetProps(queryParam, options = {}): Promise<string | void> {
-  const datasetsConfig = get(options, 'datasetsConfig', {
-    [DEFAULT_DATASET_NAME]: {[DEFAULT_DATASET_BRANCH]: [DEFAULT_DATASET_COMMIT]},
-    default: {
-      dataset: DEFAULT_DATASET_NAME,
-      branch: DEFAULT_DATASET_BRANCH,
-      commit: DEFAULT_DATASET_COMMIT
+  if (!IS_DEFAULT_DATASET) {
+    const [originDataset, originBranch] = queryParam.dataset.split('#');
+    if (!queryParam.branch && originBranch) {
+      queryParam.branch = originBranch;
+      queryParam.dataset = originDataset;
     }
-  });
+  }
+
+  const IS_DEFAULT_BRANCH = isNil(queryParam.branch) ? 'default ' : '';
+  const IS_DEFAULT_COMMIT = isNil(queryParam.commit) ? 'default ' : '';
 
   const {
-    'default': {
-      dataset: DEFAULT_DATASET,
-      branch: DEFAULT_BRANCH,
-      commit: DEFAULT_COMMIT
-    }
-  } = datasetsConfig;
-  const {
-    dataset: originDataset,
-    branch: originBranch,
-    commit: originCommit
-  } = queryParam;
-  let {
-    dataset = DEFAULT_DATASET,
-    branch = DEFAULT_BRANCH,
-    commit = DEFAULT_COMMIT
+    dataset = get(config, 'defaultRepository', DEFAULT_REPOSITORY_NAME),
+    branch = get(config, 'defaultRepositoryBranch', DEFAULT_REPOSITORY_BRANCH),
+    commit = get(config, 'defaultRepositoryCommit', DEFAULT_REPOSITORY_HASH)
   } = queryParam;
 
-  const basePath = get(options, 'basePath', DEFAULT_DATASET_DIR);
-  const fileReader = get(options, 'fileReader');
-  const datasetName = dataset;
-
-  if (isNil(datasetsConfig[dataset])) {
-    throw new Error(`No ${isNil(originDataset) ? 'default ' : ''}dataset '${dataset}' was found`);
+  if (isNil(REPOSITORY_DESCRIPTORS[ dataset ])) {
+    throw new Error(`No ${IS_DEFAULT_DATASET}dataset '${dataset}' was found`);
   }
 
-  if (isNil(datasetsConfig[dataset][branch])) {
-    throw new Error(`No ${isNil(originBranch) ? 'default ' : ''}branch '${branch}' in ${isNil(originDataset) ? 'default ' : ''}dataset '${dataset}' was found`);
+  if (isNil(REPOSITORY_DESCRIPTORS[ dataset ][ branch ])) {
+    throw new Error(`No ${IS_DEFAULT_BRANCH}branch '${branch}' in ${IS_DEFAULT_DATASET}dataset '${dataset}' was found`);
   }
 
-  if (!includes(datasetsConfig[dataset][branch], commit)) {
-    throw new Error(`No ${isNil(originCommit) ? 'default ' : ''}commit '${commit}' in ${isNil(originBranch) ? 'default ' : ''}branch '${branch}' in ${isNil(originDataset) ? 'default ' : ''}dataset '${dataset}' was found`);
+  if (!includes(REPOSITORY_DESCRIPTORS[ dataset ][ branch ], commit)) {
+    throw new Error(`No ${IS_DEFAULT_COMMIT}commit '${commit}' in ${IS_DEFAULT_BRANCH}branch '${branch}' in ${IS_DEFAULT_DATASET}dataset '${dataset}' was found`);
   }
 
-  let datasetPath;
-  let datapackagePath;
+  const repositoryPath = getRepositoryPath('', { dataset, branch, commit });
 
-  try {
-    const isAlreadyDataset = await isDatasetPathAlreadyInBasePath(fileReader, basePath);
-    if (isAlreadyDataset) {
-      dataset = basePath;
-      branch = null;
-      commit = null;
-      datasetPath = basePath;
-      datapackagePath = getDatapackagePath(basePath);
-    } else {
-      datasetPath = getDatasetPath(basePath, {dataset, branch, commit});
-      datapackagePath = getDatapackagePath(datasetPath);
-    }
-  } catch (error) {
-    throw error;
-  }
-
-  Object.assign(queryParam, {dataset, branch, commit});
-  Object.assign(options, {datasetPath, datapackagePath, datasetName});
-
-  return queryParam;
+  Object.assign(queryParam, { repositoryPath });
 }

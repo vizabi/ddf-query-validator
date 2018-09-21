@@ -1,7 +1,7 @@
 import * as get from 'lodash.get';
 import * as includes from 'lodash.includes';
 
-export const SCHEMAS = new Set(['concepts.schema', 'entities.schema', 'datapoints.schema', '*.schema']);
+export const SCHEMAS = new Set([ 'concepts.schema', 'entities.schema', 'datapoints.schema', '*.schema' ]);
 export const DATAPOINTS = 'datapoints';
 export const ENTITIES = 'entities';
 export const CONCEPTS = 'concepts';
@@ -33,41 +33,40 @@ export const AVAILABLE_ORDER_BY_CLAUSE_VALUES = new Set([
   'asc', 'desc', 1, -1
 ]);
 
-export const DEFAULT_DATASET_NAME = process.env.DEFAULT_DATASET_NAME || 'systema_globalis';
-export const DEFAULT_DATASET_BRANCH = process.env.DEFAULT_DATASET_BRANCH || 'master';
-export const DEFAULT_DATASET_COMMIT = 'HEAD';
-export const DEFAULT_DATASET_DIR = process.env.DEFAULT_DATASET_DIR || './datasets';
+export const DEFAULT_REPOSITORY_NAME = process.env.DEFAULT_REPOSITORY_NAME || 'systema_globalis';
+export const DEFAULT_REPOSITORY_BRANCH = process.env.DEFAULT_REPOSITORY_BRANCH || 'master';
+export const DEFAULT_REPOSITORY_HASH = 'HEAD';
 
-export function isSchemaQuery(query) {
+export function isSchemaQuery (query) {
   const fromClause = get(query, 'from');
   return SCHEMAS.has(fromClause);
 }
 
-export function isDatapointsQuery(query) {
+export function isDatapointsQuery (query) {
   const fromClause = get(query, 'from');
   return fromClause === DATAPOINTS;
 }
 
-export function isEntitiesQuery(query) {
+export function isEntitiesQuery (query) {
   const fromClause = get(query, 'from');
   return fromClause === ENTITIES;
 }
 
-export function isConceptsQuery(query) {
+export function isConceptsQuery (query) {
   const fromClause = get(query, 'from');
   return fromClause === CONCEPTS;
 }
 
 // UTILS
 
-export function isEntityDomainOrSet(conceptType: string, allowedValues: string[]): boolean {
+export function isEntityDomainOrSet (conceptType: string, allowedValues: string[]): boolean {
   return includes(allowedValues, conceptType);
 }
 
-export function isMeasure(conceptType: string): boolean {
-  return includes([CONCEPT_TYPE_MEASURE], conceptType);
+export function isMeasure (conceptType: string): boolean {
+  return includes([ CONCEPT_TYPE_MEASURE ], conceptType);
 }
 
-export function isIndicator(conceptType: string): boolean {
-  return includes([CONCEPT_TYPE_MEASURE, CONCEPT_TYPE_STRING], conceptType);
+export function isIndicator (conceptType: string): boolean {
+  return includes([ CONCEPT_TYPE_MEASURE, CONCEPT_TYPE_STRING ], conceptType);
 }

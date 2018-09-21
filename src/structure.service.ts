@@ -3,9 +3,11 @@ import * as isNil from 'lodash.isnil';
 import * as isObject from 'lodash.isobject';
 import * as isArray from 'lodash.isarray';
 import * as size from 'lodash.size';
+import * as cloneDeep from 'lodash.clonedeep';
 import * as values from 'lodash.values';
 import * as keys from 'lodash.keys';
 import * as map from 'lodash.map';
+import * as flatMap from 'lodash.flatmap';
 import * as first from 'lodash.first';
 import * as filter from 'lodash.filter';
 import * as startsWith from 'lodash.startswith';
@@ -36,7 +38,8 @@ export function validateQueryStructure (query, options = {}): Promise<string | v
       ...validateWhereStructure(query, options),
       ...validateLanguageStructure(query, options),
       ...validateJoinStructure(query, options),
-      ...validateOrderByStructure(query, options)
+      ...validateOrderByStructure(query, options),
+      // ...validateSubqueries(query, options)
     ];
 
     const isQueryValid = isEmpty(validationResult);
@@ -210,6 +213,19 @@ function validateOrderByStructure (query, options): string[] {
   );
 
   return compact(errorMessages);
+}
+
+function validateSubqueries (query, options): string[] {
+  return flatMap(query.join, async (join: {key: string, where: object}, joinID: string) => {
+    return await validateQueryStructure({
+      select: {key: [join.key]},
+      where: join.where,
+      from: query.from === 'entities' ? 'concepts' : 'entities',
+      dataset: query.dataset,
+      branch: query.branch,
+      commit: query.commit
+    }, Object.assign({joinID}, cloneDeep(options)));
+  });
 }
 
 // Common structure errors

@@ -1,2 +1,3 @@
-export declare function getDatasetPath(basePath: any, queryParam: any): string;
-export declare function extendQueryParamWithDatasetProps(queryParam: any, options?: {}): Promise<string | void>;
+export declare function getRepositoryPath(basePath: any, queryParam: any): string;
+export declare function getFilePath(repositoryPath: any, filePath?: string): string;
+export declare function extendQueryWithRepository(queryParam: any, config?: {}): Error | void;

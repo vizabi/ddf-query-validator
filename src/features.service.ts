@@ -47,9 +47,11 @@ export const featureDetectors: IQueryFeatureDetector[] = [
           if (keysAreEqualBetweenJoinWhereAndMainWhere && keys(joinClausePartWhere).length === 1) {
             const joinPartDetails = joinClausePartWhere[joinClausePartWhereKey];
             const keyConceptDescriptor = conceptsLookup.get(joinClausePart.key);
+            const containsInOrNinClause = !!joinPartDetails.$in || !!joinPartDetails.$nin;
+            const isEntitySetOrDomain = keyConceptDescriptor.concept_type === 'entity_set' ||
+              keyConceptDescriptor.concept_type === 'entity_domain';
 
-            if (keys(joinPartDetails).length === 1 && !!joinPartDetails.$in &&
-              (keyConceptDescriptor.concept_type === 'entity_set' || keyConceptDescriptor.concept_type === 'entity_domain')) {
+            if (keys(joinPartDetails).length === 1 && containsInOrNinClause && isEntitySetOrDomain) {
               // positive result is just HERE!
               return QueryFeature.ConjunctionPartFromWhereClauseCorrespondsToJoin;
             }

@@ -13,7 +13,7 @@ export const NOT_EXISTED_BRANCH = 'unexisted_branch';
 export const EXISTED_BRANCH = 'master';
 
 export const NOT_EXISTED_COMMIT = 'unexisted_commit';
-export const EXISTED_COMMIT = 'HEAD';
+export const EXISTED_COMMIT = 'existed_commit';
 
 export const fromClauseCouldnotBeEmpty = new RegExp(`'from' clause couldn't be empty`);
 export const fromClauseMustBeString = new RegExp(`'from' clause must be string only`);

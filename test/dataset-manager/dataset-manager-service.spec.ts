@@ -144,7 +144,7 @@ describe('Availability of dataset&branch&commit', () => {
               throw error;
             }
 
-            expect(fullQuery.repositoryPath).to.equal(`${EXPECTED_DATASET}/${EXPECTED_BRANCH}-${EXPECTED_COMMIT}`);
+            expect(fullQuery.repositoryPath).to.equal(`${EXPECTED_DATASET}/${EXPECTED_BRANCH}/${EXPECTED_COMMIT}`);
           });
         });
       });

@@ -78,13 +78,17 @@ function validateSelectDefinitions (query, options): string[] {
 
   errorMessages.push(
     checkIfSelectKeyHasInvalidDefinitions(fromClause, key, ALLOWED_KEYS),
-    checkIfSelectValueHasInvalidDefinitions(fromClause, value, ALLOWED_VALUES),
+    checkIfSelectValueHasInvalidDefinitions(query, value, ALLOWED_VALUES),
   );
 
   return compact(errorMessages);
 }
 
 function validateWhereDefinitions (query, options): string[] {
+  if (query.debug !== true) {
+    return [];
+  }
+
   const errorMessages = [];
   const whereClause = get(query, 'where', null);
   const fromClause = get(query, 'from', null);
@@ -155,7 +159,12 @@ function checkIfSelectKeyHasInvalidDefinitions (fromClause, key, ALLOWED_KEYS) {
   }
 }
 
-function checkIfSelectValueHasInvalidDefinitions (fromClause, value, ALLOWED_VALUES) {
+function checkIfSelectValueHasInvalidDefinitions (query, value, ALLOWED_VALUES) {
+  if (query.debug !== true) {
+    return;
+  }
+
+  const fromClause = get(query, 'from', null);
   const unavailableValues: string[] = getUnavailableSelectItems(value, ALLOWED_VALUES);
 
   if (!isEmpty(value) && !isEmpty(unavailableValues)) {

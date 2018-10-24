@@ -52,6 +52,10 @@ export function validateQueryStructure (query, options = {}): Promise<string | v
   });
 }
 
+export function getVersion() {
+  return process.env.npm_package_version;
+}
+
 function validateDatasetStructure(query, options): string[] {
   const errorMessages = [];
   const datasetClause = get(query, 'dataset');

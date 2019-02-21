@@ -15,13 +15,14 @@
     "alwaysStrict": true,
     "sourceMap": true,
     "noEmitHelpers": true,
-    "importHelpers": true,
+    "importHelpers": false,
     "strictNullChecks": false,
     "baseUrl": ".",
     "lib": [
       "es2017",
       "dom"
-    ]
+    ],
+    "downlevelIteration": true
   },
   "include": [
     "src/index.ts"

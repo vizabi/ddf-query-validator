@@ -16,7 +16,22 @@ export function getFilePath(repositoryPath, filePath = 'datapackage.json'): stri
   return `${repositoryPath}/${filePath}`;
 }
 
-export function extendQueryWithRepository(queryParam, config = {}): Error | void {
+export interface IReposConfig {
+  repositoryDescriptors;
+  defaultRepository?: string;
+  defaultRepositoryCommit?: string;
+  defaultRepositoryBranch?: string;
+}
+
+export interface IQueryRepoDescriptor {
+  dataset: string;
+  branch: string;
+  commit: string;
+  isDefaultBranch: boolean;
+  isDefaultCommit: boolean;
+}
+
+export function extendQueryWithRepository(queryParam, config: IReposConfig = {repositoryDescriptors: {}}): Error | IQueryRepoDescriptor {
   // TODO: refactor unit tests
   // const REPOSITORY_DESCRIPTORS = get(config, 'repositoryDescriptors', {[DEFAULT_REPOSITORY]: {[DEFAULT_BRANCH]: [DEFAULT_HASH]}});
   const REPOSITORY_DESCRIPTORS = get(config, 'repositoryDescriptors', {});
@@ -31,8 +46,8 @@ export function extendQueryWithRepository(queryParam, config = {}): Error | void
     }
   }
 
-  const IS_DEFAULT_BRANCH = isNil(queryParam.branch);
-  const IS_DEFAULT_COMMIT = isNil(queryParam.commit);
+  const IS_DEFAULT_BRANCH = isNil(queryParam.branch) || queryParam.branch === config.defaultRepositoryBranch;
+  const IS_DEFAULT_COMMIT = isNil(queryParam.commit) || queryParam.commit === config.defaultRepositoryCommit;
 
   const {
     dataset = get(config, 'defaultRepository', DEFAULT_REPOSITORY_NAME),
@@ -64,6 +79,8 @@ export function extendQueryWithRepository(queryParam, config = {}): Error | void
   const repositoryPath = getRepositoryPath('', { dataset, branch, commit });
 
   Object.assign(queryParam, { repositoryPath });
+
+  return {dataset, branch, commit, isDefaultBranch: IS_DEFAULT_BRANCH, isDefaultCommit: IS_DEFAULT_COMMIT};
 }
 
 function printDefault(isSomethingTrue) {

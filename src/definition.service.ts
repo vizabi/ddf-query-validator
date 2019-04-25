@@ -125,10 +125,10 @@ function getWhereOperators (whereClause): object {
   return operators;
 }
 
-function getWhereOperatorsRecursively (whereClause, operators: object, сandidate?: string) {
+function getWhereOperatorsRecursively (whereClause, operators: object, candidate?: string) {
   for (const field in whereClause) {
     // no support for deeper object structures (mongo style)
-    const hasCandidate = !isNil(сandidate);
+    const hasCandidate = !isNil(candidate);
     const isCandidate = !hasCandidate && !startsWith(field, '$') && isNaN(+field);
     const [domain, ...set] = field.split('.');
 
@@ -146,7 +146,7 @@ function getWhereOperatorsRecursively (whereClause, operators: object, сandidat
       continue;
     }
 
-    getWhereOperatorsRecursively(whereClause[ field ], operators, isCandidate ? domain : сandidate);
+    getWhereOperatorsRecursively(whereClause[ field ], operators, isCandidate ? domain : candidate);
   }
 }
 

@@ -23,7 +23,9 @@ import {
   RESERVED_UNIT,
   RESERVED_DRILL_UP,
 } from './helper.service';
-import { isPrimitive } from 'util';
+function isPrimitive(value) {
+  return (typeof value !== 'object' && typeof value !== 'function') || value === null;
+}
 
 export function validateQueryDefinitions (query, options = {}): Promise<string | void> {
   return new Promise((resolve, reject) => {

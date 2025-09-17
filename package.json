@@ -1,8 +1,11 @@
 {
-  "name": "ddf-query-validator",
-  "version": "1.4.1",
+  "name": "@vizabi/ddf-query-validator",
+  "version": "1.4.2",
   "description": "DDF query validator",
   "main": "lib/index.js",
+  "publishConfig": {
+    "access": "public"
+  },
   "scripts": {
     "test": "npm run unit",
     "test-travis": "npm run e2e && nyc report --reporter=text-lcov > coverage.lcov && codecov",

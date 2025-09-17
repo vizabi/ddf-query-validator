@@ -27,7 +27,9 @@ import {
   isEntitiesQuery,
   isSchemaQuery,
 } from './helper.service';
-import { isPrimitive } from 'util';
+function isPrimitive(value) {
+  return (typeof value !== 'object' && typeof value !== 'function') || value === null;
+}
 
 export function validateQueryStructure (query, options = {}): Promise<string | void> {
   return new Promise((resolve, reject) => {

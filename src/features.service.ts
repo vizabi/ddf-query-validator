@@ -1,6 +1,6 @@
-import * as keys from 'lodash.keys';
-import * as isObject from 'lodash.isobject';
-import * as head from 'lodash.head';
+import keys from 'lodash-es/keys';
+import isObject from 'lodash-es/isObject';
+import head from 'lodash-es/head';
 import { isDatapointsQuery } from './helper.service';
 import { IQuery, IQueryFeatureDetector, QueryFeature } from './interfaces';
 
@@ -9,7 +9,7 @@ function isWhereClauseBasedOnConjunction(query: IQuery): QueryFeature | null {
     return null;
   }
 
-  if (keys(query.where).length === 1 && isObject(query.where) && query.where.$and) {
+  if (keys(query.where).length === 1 && isObject(query.where) && (query.where as any).$and) {
     return QueryFeature.WhereClauseBasedOnConjunction;
   }
 

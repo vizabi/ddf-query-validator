@@ -8,8 +8,8 @@ import {
 } from '../common';
 import * as datasetManager from '../../src/dataset-manager.service';
 import * as chai from 'chai';
-import * as cloneDeep from 'lodash.clonedeep';
-import * as set from 'lodash.set';
+import cloneDeep from 'lodash-es/cloneDeep';
+import set from 'lodash-es/set';
 import { DEFAULT_REPOSITORY_BRANCH, DEFAULT_REPOSITORY_HASH, DEFAULT_REPOSITORY_NAME } from '../../src/helper.service';
 
 const expect = chai.expect;

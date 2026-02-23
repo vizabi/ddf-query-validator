@@ -14,7 +14,7 @@
     "allowSyntheticDefaultImports": true,
     "alwaysStrict": true,
     "sourceMap": true,
-    "noEmitHelpers": true,
+    "noEmitHelpers": false,
     "importHelpers": false,
     "strictNullChecks": false,
     "baseUrl": ".",

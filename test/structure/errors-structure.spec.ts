@@ -1,5 +1,5 @@
 import * as chai from 'chai';
-import * as cloneDeep from 'lodash.clonedeep';
+import cloneDeep from 'lodash-es/cloneDeep';
 import * as validator from '../../src/structure.service';
 import {
   expectPromiseRejection,

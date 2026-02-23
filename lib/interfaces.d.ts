@@ -17,4 +17,4 @@ export interface IQuery {
     join?: any;
     order_by?: string[];
 }
-export declare type IQueryFeatureDetector = (query: IQuery, conceptsLookup?: any) => QueryFeature | null;
+export type IQueryFeatureDetector = (query: IQuery, conceptsLookup?: any) => QueryFeature | null;

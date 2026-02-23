@@ -1,6 +1,6 @@
-import * as isNil from 'lodash.isnil';
-import * as includes from 'lodash.includes';
-import * as get from 'lodash.get';
+import isNil from 'lodash-es/isNil';
+import includes from 'lodash-es/includes';
+import get from 'lodash-es/get';
 import { DEFAULT_REPOSITORY_BRANCH, DEFAULT_REPOSITORY_HASH, DEFAULT_REPOSITORY_NAME } from './helper.service';
 
 export function getRepositoryPath(basePath, queryParam) {

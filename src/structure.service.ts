@@ -158,6 +158,7 @@ function validateWhereStructure (query, options): string[] {
   errorMessages.push(
     checkIfWhereHasInvalidStructure(whereClause, getJoinIDPathIfExists(options)),
     checkIfWhereHasUnknownOperators(joinClause, whereOperators, getJoinIDPathIfExists(options)),
+    checkIfBooleanOperatorsAreArrays(whereClause, getJoinIDPathIfExists(options)),
   );
 
   return compact(errorMessages);
@@ -202,7 +203,8 @@ function validateJoinStructure (query, options): string[] {
     default:
       errorMessages.push(
         checkIfJoinHasInvalidStructure(joinClause),
-        ...map(joinClause, (item, joinID) => checkIfJoinKeyHasInvalidStructure(item, getJoinIDPathIfExists({joinID})))
+        ...map(joinClause, (item, joinID) => checkIfJoinKeyHasInvalidStructure(item, getJoinIDPathIfExists({joinID}))),
+        ...map(joinClause, (item, joinID) => checkIfBooleanOperatorsAreArrays(get(item, 'where'), getJoinIDPathIfExists({joinID})))
       );
       break;
   }
@@ -272,6 +274,19 @@ function checkIfJoinKeyHasInvalidStructure (joinClause, joinPath: string): strin
 function checkIfWhereHasInvalidStructure (whereClause, joinPath: string): string | void {
   if (!isNil(whereClause) && !isStrictObject(whereClause)) {
     return `'${joinPath}where' clause must be object only`;
+  }
+}
+
+function checkIfBooleanOperatorsAreArrays (clause, joinPath: string): string | void {
+  if (isNil(clause) || !isObject(clause)) return;
+  for (const field in clause) {
+    if (includes(['$and', '$or', '$nor'], field) && !isArray(clause[field])) {
+      return `'${joinPath}where' clause: operator '${field}' must be an array`;
+    }
+    if (isObject(clause[field])) {
+      const nested = checkIfBooleanOperatorsAreArrays(clause[field], joinPath);
+      if (nested) return nested;
+    }
   }
 }
 

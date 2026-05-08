@@ -1,6 +1,6 @@
 {
   "name": "@vizabi/ddf-query-validator",
-  "version": "1.4.4",
+  "version": "1.4.5",
   "description": "DDF query validator",
   "main": "lib/index.js",
   "publishConfig": {

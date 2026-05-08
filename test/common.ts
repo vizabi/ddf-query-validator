@@ -42,6 +42,8 @@ export const joinKeyClauseMustBeString = new RegExp(`'join.\\$test.key' clause m
 export const orderByClauseMustHaveCertainStructure = new RegExp(`'order_by' clause must be string or array of strings \\|\\| objects only`);
 
 export const whereClauseHasUnknownOperator = new RegExp(`'where' clause has unknown operator\\(s\\) '\\$geo'\, replace it with allowed operators: `);
+export const whereClauseBooleanOperatorMustBeArray = (op: string) => new RegExp("'where' clause: operator '\\$" + op + "' must be an array");
+export const joinWhereClauseBooleanOperatorMustBeArray = (joinId: string, op: string) => new RegExp("'join\\.\\$" + joinId + "\\.where' clause: operator '\\$" + op + "' must be an array");
 export const joinWhereClauseHasUnknownOperator = new RegExp(`'join\.\\$test\.where' clause has unknown operator\\(s\\) '\\$geo'\, replace it with allowed operators: `);
 
 export const tooManyQueryDefinitionErrors = new RegExp(`Too many query definition errors \\[repo: test/fixtures/systema_globalis/master-HEAD\\]`);
